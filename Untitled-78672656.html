@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hacking Terminal</title>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      overflow: hidden;
+    }
+    .terminal {
+      width: 90%;
+      height: 80vh;
+      margin: 20px auto;
+      border: 1px solid lime;
+      padding: 20px;
+      overflow-y: auto;
+      position: relative;
+    }
+    .process {
+      color: lightgreen;
+      font-size: 14px;
+      margin-top: 5px;
+      white-space: pre-wrap;
+    }
+    .input-line {
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+    }
+    .prompt {
+      color: lime;
+      font-size: 16px;
+    }
+    .input {
+      background: none;
+      border: none;
+      outline: none;
+      color: lime;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      width: 100%;
+    }
+    .hidden {
+      display: none;
+    }
+    .centered {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: lime;
+    }
+    input[type="password"] {
+      background: black;
+      color: lime;
+      border: 1px solid lime;
+      padding: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 10px;
+      background-color: lime;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    img.exec-image {
+      max-width: 100%;
+      margin-top: 10px;
+      border: 1px solid lime;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="login-screen" class="centered">
+  <h2>Enter Password to Unlock Terminal</h2>
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="unlockTerminal()">Unlock</button>
+</div>
+
+<!-- First Terminal Section -->
+<div id="terminal-container" class="hidden">
+  <div class="terminal" id="terminal"></div>
+  <div class="input-line">
+    <span class="prompt">&gt;</span>
+    <input type="text" id="terminal-input" class="input" autofocus />
+  </div>
+</div>
+
+<!-- Second Terminal Section -->
+<div id="second-terminal" class="hidden">
+  <div class="terminal" id="terminal2">
+    <div class="process">ENTER EXECUTIVE ID TO PROCEED</div>
+  </div>
+  <div class="input-line">
+    <span class="prompt">&gt;</span>
+    <input type="text" id="second-input" class="input" />
+  </div>
+</div>
+
+<script>
+  const password = "INDRESH";
+  const loginScreen = document.getElementById("login-screen");
+  const terminalContainer = document.getElementById("terminal-container");
+  const secondTerminal = document.getElementById("second-terminal");
+  const terminal = document.getElementById("terminal");
+  const inputField = document.getElementById("terminal-input");
+  const input2 = document.getElementById("second-input");
+  const terminal2 = document.getElementById("terminal2");
+
+  const hackerResponses = [
+    "Bypassing firewall...",
+    "Initializing sequence...",
+    "Accessing mainframe...",
+    "Retrieving credentials...",
+    "Injecting payload...",
+    "Decryption complete.",
+    "Establishing secure socket...",
+    "Trace route: success.",
+    "Root privileges obtained.",
+    "Cloning repositories...",
+    "Running exploits...",
+    "Uploading backdoor..."
+  ];
+
+  const aiResponses = {
+    "code": "CWADS74 — use with extreme caution.",
+    "mission": "Retrieve the blackbox from Zone 11.",
+    "location": "Coordinates 34.8021° N, 38.9968° E. Proceed quietly.",
+    "agent name": "Codename: RAVEN. Clearance level 7.",
+    "decrypt": "Use sequence: ZYX-4483-GHX. Key active for 5 mins.",
+    "target": "Subject Alpha last seen near Safehouse Delta.",
+    "who are you": "I am ORACLE, your mission assistant AI.",
+    "status": "Operational. Surveillance feeds are stable.",
+    "next task": "Neutralize interference, then await contact.",
+    "exit": "Closing session... Stay in the shadows, Agent."
+  };
+
+  const spyQuestions = [
+    "Agent, what is your objective?",
+    "What does CWADS74 mean to you?",
+    "Have you secured the encryption key?",
+    "Where is the drop point?",
+    "Is Alpha compromised?",
+    "Awaiting your next instruction..."
+  ];
+
+  function unlockTerminal() {
+    const inputPass = document.getElementById("password").value;
+    if (inputPass === password) {
+      loginScreen.classList.add("hidden");
+      terminalContainer.classList.remove("hidden");
+      addLine(terminal, "Access granted. Terminal unlocked.");
+      setTimeout(() => addLine(terminal, "Welcome, Agent. Type a command."), 1000);
+      inputField.focus();
+    } else {
+      alert("Incorrect password.");
+    }
+  }
+
+  inputField.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      const command = inputField.value.trim().toLowerCase();
+      addLine(terminal, `> ${command}`);
+
+      if (command === "trigerhawk") {
+        simulateHack(() => {
+          alert("ACCESS ALLOWED");
+          terminalContainer.classList.add("hidden");
+          secondTerminal.classList.remove("hidden");
+          input2.focus();
+        });
+      } else if (aiResponses[command]) {
+        setTimeout(() => {
+          addLine(terminal, aiResponses[command]);
+          askSpyQuestion();
+        }, 500);
+      } else {
+        generateFakeOutput(terminal);
+        askSpyQuestion();
+      }
+      inputField.value = "";
+    }
+  });
+
+  function askSpyQuestion() {
+    const question = spyQuestions[Math.floor(Math.random() * spyQuestions.length)];
+    setTimeout(() => addLine(terminal, `AI: ${question}`), 1000);
+  }
+
+  let imageShown = false;
+
+  input2.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const command = input2.value.trim();
+    addLine(terminal2, `> ${command}`);
+
+    if (!imageShown && command === "AR995011") {
+      imageShown = true;
+      addLine(terminal2, "Valid Executive ID. Accessing record...");
+      setTimeout(() => {
+        const image = document.createElement("img");
+        image.src = "https://i.postimg.cc/P5hKfcy1/Screenshot-44-11122.png";
+        image.alt = "Executive ID Display";
+        image.className = "exec-image";
+        image.id = "exec-image"; // Important: Add ID for easy removal
+        terminal2.appendChild(image);
+        terminal2.scrollTop = terminal2.scrollHeight;
+      }, 1000);
+    }
+
+    else if (command === "EXIT1011") {
+      const image = document.getElementById("exec-image");
+      if (image) {
+        terminal2.removeChild(image);
+        addLine(terminal2, "Executive ID image removed. Visibility terminated.");
+        imageShown = false;
+      } else {
+        addLine(terminal2, "No image found to remove.");
+      }
+    }
+
+    else {
+      generateFakeOutput(terminal2);
+    }
+
+    input2.value = "";
+  }
+});
+
+
+  function addLine(terminalElement, text) {
+    const line = document.createElement("div");
+    line.className = "process";
+    line.textContent = text;
+    terminalElement.appendChild(line);
+    terminalElement.scrollTop = terminalElement.scrollHeight;
+  }
+
+  function generateFakeOutput(terminalElement) {
+    const lines = Math.floor(Math.random() * 3) + 2;
+    for (let i = 0; i < lines; i++) {
+      const random = hackerResponses[Math.floor(Math.random() * hackerResponses.length)];
+      setTimeout(() => addLine(terminalElement, random), 150 * i);
+    }
+  }
+
+  function simulateHack(callback) {
+    let count = 0;
+    const total = 50;
+    const interval = setInterval(() => {
+      const random = hackerResponses[Math.floor(Math.random() * hackerResponses.length)];
+      addLine(terminal, `${random} [${Math.random().toString(36).substring(2, 10)}]`);
+      terminal.scrollTop = terminal.scrollHeight;
+      count++;
+      if (count >= total) {
+        clearInterval(interval);
+        setTimeout(callback, 500);
+      }
+    }, 50);
+  }
+</script>
+
+</body>
+</html>
